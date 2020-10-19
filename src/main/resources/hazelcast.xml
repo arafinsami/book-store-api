@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hazelcast xmlns="http://www.hazelcast.com/schema/config"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.hazelcast.com/schema/config
+           http://www.hazelcast.com/schema/config/hazelcast-config-3.12.xsd">
+
+	<map name="book-list">
+		<eviction-policy>LRU</eviction-policy>
+		<!-- 7 * 24 * 60 * 60 -->
+		<time-to-live-seconds>10</time-to-live-seconds>
+	</map>
+
+	<map name="hibernate-second-level">
+		<eviction-policy>LRU</eviction-policy>
+		<!--30 * 60 -->
+		<time-to-live-seconds>1800</time-to-live-seconds>
+		<!--10 * 60 -->
+		<max-idle-seconds>600</max-idle-seconds>
+		<max-size policy="PER_NODE">2000</max-size>
+	</map>
+	<network>
+		<join>
+			<multicast enabled="false">
+			</multicast>
+		</join>
+	</network>
+</hazelcast>
+
