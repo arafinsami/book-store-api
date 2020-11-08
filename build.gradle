@@ -6,6 +6,7 @@ plugins {
 
 group = 'com.sami'
 version = 'V1'
+sourceCompatibility = '15'
 
 configurations {
 	compileOnly {
@@ -44,6 +45,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	
 	compile 'com.googlecode.json-simple:json-simple:1.1.1'
+	compile "io.springfox:springfox-boot-starter:3.0.0"
 	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 	
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

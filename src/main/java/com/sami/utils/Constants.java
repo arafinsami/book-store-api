@@ -13,5 +13,7 @@ public class Constants {
 	public static final String BOOK_SAVE = "Book saved successfully !!";
 	
 	public static final String BOOK_UPDATE = "Book saved successfully !!";
+	
+	public static final String SIGNUP = "Signup successfully !!";
 }
 

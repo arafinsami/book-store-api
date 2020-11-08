@@ -14,18 +14,16 @@ public class SecurityConstant {
 	
 	public static final String[] PUBLIC_MATECHERS = {
     		"/setup",
-    		"/login",
+    		"/my-account/**",
     		"/link/**",
     		"/v2/api-docs",
+    		"/swagger-ui.html",
+    		"/swagger-ui/**",
+    		"/swagger-resources/**",
+    		"/webjars/**",
             "/configuration/ui",
-            "/swagger-resources/**",
             "/configuration/security/**",
-            "/swagger-ui.html",
-            "/webjars/**",
             "/permission-data-upload/**",
-            "/ministry/**",
-            "/eoi/**",
-            "/advertisement-tender-count/**",
             "/reset/**",
             "/actuator/info"
 			};
@@ -36,6 +34,7 @@ public class SecurityConstant {
             "/swagger-resources/**",
             "/configuration/security/**",
             "/swagger-ui.html",
+            "/swagger-ui/**",
             "/webjars/**"
 			};
     
