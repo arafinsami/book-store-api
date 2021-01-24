@@ -15,5 +15,11 @@ public class Constants {
 	public static final String BOOK_UPDATE = "Book saved successfully !!";
 	
 	public static final String SIGNUP = "Signup successfully !!";
+	
+	public static final String REQUIRED = "Required";
+	
+	public static final String ALREADY_EXIST = "ALREADY_EXIST";
+	
+	public static final String CHARACTER_LIMIT = "Limit exceded";
 }
 

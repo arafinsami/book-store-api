@@ -4,6 +4,7 @@ import static com.sami.enums.ModuleName.SIGNUP;
 import static java.lang.String.valueOf;
 
 import java.util.Calendar;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,4 +47,14 @@ public class AppUserService {
 		actionLogService.publishActivity(SIGNUP, action, valueOf(user.getId()), comments);
 		return user;
 	}
+
+	public AppUser findByUsername(String username) {
+		return repository.findByUsername(username);
+	}
+	
+	public Optional<AppUser> findByEmail(String email) {
+		return repository.findByEmail(email);
+	}
 }
+
+

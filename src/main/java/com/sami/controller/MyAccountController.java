@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ import com.sami.entity.Role;
 import com.sami.repository.AppUserRepository;
 import com.sami.security.TokenProvider;
 import com.sami.service.AppUserService;
+import com.sami.validator.MyAccountValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -56,6 +58,8 @@ public class MyAccountController {
 	private final AppUserRepository appUserRepository;
 
 	private final AppUserService appUserService;
+
+	private final MyAccountValidator myAccountValidator;
 
 	@PostMapping("/login")
 	public ResponseEntity<JSONObject> authenticationToken(@RequestBody LoginDto login) throws AuthenticationException {
@@ -91,6 +95,8 @@ public class MyAccountController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<JSONObject> signup(@Valid @RequestBody SignupDto dto, BindingResult bindingResult) {
+
+		ValidationUtils.invokeValidator(myAccountValidator, dto, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return ok(errors(error(bindingResult)).getJson());

@@ -85,7 +85,7 @@ public class TokenProvider implements Serializable {
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
-		claims.put(CLAIM_KEY_ROLE, getUniqueAuthorities(userDetails));
+		//claims.put(CLAIM_KEY_ROLE, getUniqueAuthorities(userDetails));
 		final Date createdDate = new Date();
 		claims.put(CLAIM_KEY_CREATED, createdDate);
 		return doGenerateToken(claims, accessTokenExpiration);

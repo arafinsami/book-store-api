@@ -18,8 +18,10 @@ public class ApiError {
 	public static Map<String, String> error(BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			for (ObjectError objectError : bindingResult.getAllErrors()) {
-				FieldError fieldError = (FieldError) objectError;
-				errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+				if (objectError instanceof FieldError) {
+					FieldError fieldError = (FieldError) objectError;
+					errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+				}
 			}
 		}
 		return errorMap;
