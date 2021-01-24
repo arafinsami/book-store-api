@@ -39,11 +39,14 @@ import com.sami.exceptions.AppException;
 import com.sami.service.BookService;
 import com.sami.utils.FileUpload;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(path = "book")
 @RequiredArgsConstructor
+@Api(tags = "Book's Data")
 public class BookController extends FileUpload {
 
 	private MultipartFile file = null;
@@ -55,6 +58,7 @@ public class BookController extends FileUpload {
 
 	@PostMapping("/save")
 	@PreAuthorize("hasAuthority('BOOK_SAVE')")
+	@ApiOperation(value = "save book", response = BookDto.class)
 	public ResponseEntity<JSONObject> save(@Valid @RequestBody BookDto dto, BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
@@ -69,6 +73,7 @@ public class BookController extends FileUpload {
 
 	@PutMapping("/update")
 	@PreAuthorize("hasAuthority('BOOK_UPDATE')")
+	@ApiOperation(value = "update book", response = BookDto.class)
 	public ResponseEntity<JSONObject> update(@Valid @RequestBody BookDto dto, BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
@@ -91,6 +96,7 @@ public class BookController extends FileUpload {
 
 	@GetMapping("/lists")
 	@PreAuthorize("hasAuthority('BOOK_LIST')")
+	@ApiOperation(value = "book lists", response = BookDto.class)
 	public ResponseEntity<JSONObject> findAll() {
 		List<BookDto> dtos = bookService.findAll().stream().map(BookDto::from).collect(Collectors.toList());
 		return ok(success(dtos).getJson());
@@ -131,6 +137,7 @@ public class BookController extends FileUpload {
 	}
 
 	@DeleteMapping("/delete/{id}")
+	@ApiOperation(value = "delete book by id")
 	public ResponseEntity<JSONObject> delete(@PathVariable("id") Long id) {
 
 		bookService.delete(id);

@@ -42,11 +42,14 @@ import com.sami.security.TokenProvider;
 import com.sami.service.AppUserService;
 import com.sami.validator.MyAccountValidator;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(path = "my-account")
 @RequiredArgsConstructor
+@Api(tags = "my account's Data")
 public class MyAccountController {
 
 	private final AuthenticationManager authenticationManager;
@@ -62,6 +65,7 @@ public class MyAccountController {
 	private final MyAccountValidator myAccountValidator;
 
 	@PostMapping("/login")
+	@ApiOperation(value = "user login", response = LoginDto.class)
 	public ResponseEntity<JSONObject> authenticationToken(@RequestBody LoginDto login) throws AuthenticationException {
 
 		Authentication authentication = authenticationManager
@@ -94,6 +98,7 @@ public class MyAccountController {
 	}
 
 	@PostMapping("/signup")
+	@ApiOperation(value = "user signup", response = SignupDto.class)
 	public ResponseEntity<JSONObject> signup(@Valid @RequestBody SignupDto dto, BindingResult bindingResult) {
 
 		ValidationUtils.invokeValidator(myAccountValidator, dto, bindingResult);
