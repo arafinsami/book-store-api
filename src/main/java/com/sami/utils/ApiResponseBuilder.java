@@ -8,7 +8,9 @@ import org.json.simple.JSONObject;
 public class ApiResponseBuilder implements ApiResponse {
 
 	private Object data;
+	
 	private Object errors;
+	
 	private ResponseType responseType;
 
 	public ApiResponseBuilder(ResponseType responseType) {

@@ -10,6 +10,7 @@ import org.springframework.validation.Validator;
 
 import com.sami.dto.SignupDto;
 import com.sami.entity.AppUser;
+import com.sami.exceptions.AppException;
 import com.sami.service.AppUserService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,14 +32,18 @@ public class MyAccountValidator implements Validator {
 		SignupDto dto = (SignupDto) target;
 
 		if (isNotEmpty(dto.getUsername())) {
-			Optional<AppUser> optional = Optional.of(appUserService.findByUsername(dto.getUsername()));
+			
+			Optional<AppUser> optional = Optional.ofNullable(appUserService.findByUsername(dto.getUsername()));
 			if (optional.isPresent()) {
 				errors.reject("username", null, "username already exist");
 			}
 		}
 
 		if (isNotEmpty(dto.getEmail())) {
-			Optional<AppUser> optional = appUserService.findByEmail(dto.getEmail());
+			
+			Optional<AppUser> optional = Optional
+					.ofNullable(appUserService.findByEmail(dto.getEmail()).orElseThrow(AppException::new));
+			
 			if (optional.isPresent()) {
 				errors.reject("email", null, "email already exist");
 			}
