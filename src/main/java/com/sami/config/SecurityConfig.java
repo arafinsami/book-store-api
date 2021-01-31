@@ -1,10 +1,7 @@
 package com.sami.config;
 
-import static com.sami.constants.SecurityConstant.HTTP_ALLOWS_METHODS;
 import static com.sami.constants.SecurityConstant.PUBLIC_MATECHERS;
 import static com.sami.constants.SecurityConstant.SWAGGER_MATECHERS;
-
-import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.sami.security.CustomAuthenticationEntryPoint;
 import com.sami.security.CustomAuthenticationTokenFilter;
@@ -89,20 +85,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(SWAGGER_MATECHERS);
     }
     
-   
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public WebMvcConfigurer corsConfigurer() {
     	
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addExposedHeader("Access-Control-Expose-Headers,authorization");
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowedMethods(Arrays.asList(HTTP_ALLOWS_METHODS));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedMethods("*").allowedOriginPatterns("*");
+            }
+        };
     }
+    
     
 }
 
