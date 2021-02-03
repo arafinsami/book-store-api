@@ -36,6 +36,7 @@ public class ProfileDto {
 		dto.setLastName(user.getLastName());
 		dto.setUsername(user.getUsername());
 		dto.setEmail(user.getEmail());
+		dto.setPassword(user.getPassword());
 		return dto;
 	}
 }
