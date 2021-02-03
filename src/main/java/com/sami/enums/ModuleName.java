@@ -3,5 +3,6 @@ package com.sami.enums;
 public enum ModuleName {
 
 	BOOK,
-	SIGNUP;
+	SIGNUP,
+	PROFILE_UPDATE;
 }

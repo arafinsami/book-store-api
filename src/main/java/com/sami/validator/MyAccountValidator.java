@@ -41,8 +41,7 @@ public class MyAccountValidator implements Validator {
 
 		if (isNotEmpty(dto.getEmail())) {
 			
-			Optional<AppUser> optional = Optional
-					.ofNullable(appUserService.findByEmail(dto.getEmail()).orElseThrow(AppException::new));
+			Optional<AppUser> optional = appUserService.findByEmail(dto.getEmail());
 			
 			if (optional.isPresent()) {
 				errors.reject("email", null, "email already exist");

@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@DynamicUpdate
 @NoArgsConstructor
 public class AppUser implements Serializable {
 

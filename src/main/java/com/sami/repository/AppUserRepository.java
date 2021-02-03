@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.sami.entity.AppUser;
 
 @Repository
-public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
+public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
 	AppUser findByUsername(String username);
 

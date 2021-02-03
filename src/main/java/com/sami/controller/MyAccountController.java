@@ -38,6 +38,7 @@ import com.sami.entity.AppUser;
 import com.sami.entity.Permission;
 import com.sami.entity.Role;
 import com.sami.repository.AppUserRepository;
+import com.sami.security.ActiveUserContext;
 import com.sami.security.TokenProvider;
 import com.sami.service.AppUserService;
 import com.sami.validator.MyAccountValidator;
@@ -63,6 +64,8 @@ public class MyAccountController {
 	private final AppUserService appUserService;
 
 	private final MyAccountValidator myAccountValidator;
+	
+	private final ActiveUserContext activeUserContext;
 
 	@PostMapping("/login")
 	@ApiOperation(value = "user login", response = LoginDto.class)
@@ -80,6 +83,8 @@ public class MyAccountController {
 		String refreshToken = tokenProvider.generateRefreshToken(userDetails);
 
 		AppUser appUser = appUserRepository.findByUsername(login.getUsername());
+		
+		String username = activeUserContext.getLoggedInUserName();
 
 		List<Permission> permissions = new ArrayList<Permission>();
 		Set<Role> roles = appUser.getRoles();
@@ -91,7 +96,7 @@ public class MyAccountController {
 		Map<String, Object> token = new HashMap<String, Object>();
 		token.put("token", accessToken);
 		token.put("refreshToken", refreshToken);
-		token.put("username", userDetails.getUsername());
+		token.put("username", username);
 		token.put("permissions", permissions.stream().map(Permission::getRouteName).collect(Collectors.toList()));
 
 		return ok(success(token).getJson());
@@ -112,4 +117,5 @@ public class MyAccountController {
 		appUserService.signup(user, SAVE, SIGNUP);
 		return ok(success(SignupDto.from(user)).getJson());
 	}
+	
 }
