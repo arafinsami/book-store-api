@@ -1,6 +1,6 @@
 package com.sami.service;
 
-import static com.sami.constants.Constants.PROFILE_UPDATE_COMMENTS;
+import static com.sami.constants.Comments.PROFILE_UPDATE_COMMENTS;
 import static com.sami.enums.Action.UPDATE;
 import static com.sami.enums.ModuleName.PROFILE_UPDATE;
 import static java.lang.String.valueOf;

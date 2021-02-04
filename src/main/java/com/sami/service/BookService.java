@@ -1,5 +1,9 @@
 package com.sami.service;
 
+import static com.sami.constants.Comments.BOOK_SAVE_COMMENT;
+import static com.sami.constants.Comments.BOOK_UPDATE;
+import static com.sami.enums.Action.SAVE;
+import static com.sami.enums.Action.UPDATE;
 import static com.sami.enums.ModuleName.BOOK;
 import static java.lang.String.valueOf;
 
@@ -12,7 +16,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.sami.entity.Book;
-import com.sami.enums.Action;
 import com.sami.repository.BookRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,10 +29,30 @@ public class BookService {
 	private final ActionLogService actionLogService;
 
 	@Transactional
-	public Book save(Book book, Action action, String comments) {
+	public Book save(Book book) {
 
 		Book b = bookRepository.save(book);
-		actionLogService.publishActivity(BOOK, action, valueOf(b.getId()), comments);
+		
+		actionLogService.publishActivity(
+				BOOK,
+				SAVE,
+				valueOf(b.getId()),
+				BOOK_SAVE_COMMENT
+		);
+		return b;
+	}
+	
+	@Transactional
+	public Book update(Book book) {
+
+		Book b = bookRepository.save(book);
+		
+		actionLogService.publishActivity(
+				BOOK,
+				UPDATE,
+				valueOf(b.getId()),
+				BOOK_UPDATE
+		);
 		return b;
 	}
 

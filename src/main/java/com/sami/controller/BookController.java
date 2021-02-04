@@ -1,12 +1,8 @@
 package com.sami.controller;
 
-import static com.sami.enums.Action.SAVE;
-import static com.sami.enums.Action.UPDATE;
 import static com.sami.utils.ApiError.error;
 import static com.sami.utils.ApiResponseBuilder.errors;
 import static com.sami.utils.ApiResponseBuilder.success;
-import static com.sami.utils.Constants.BOOK_SAVE;
-import static com.sami.utils.Constants.BOOK_UPDATE;
 import static org.springframework.http.ResponseEntity.ok;
 
 import java.io.IOException;
@@ -52,7 +48,7 @@ public class BookController extends FileUpload {
 	private MultipartFile file = null;
 
 	private final BookService bookService;
-	
+
 	@Value("${deletionPath}")
 	String deletionPath;
 
@@ -67,7 +63,7 @@ public class BookController extends FileUpload {
 
 		Book book = dto.to();
 
-		bookService.save(book, SAVE, BOOK_SAVE);
+		bookService.save(book);
 		return ok(success(BookDto.from(book)).getJson());
 	}
 
@@ -82,7 +78,8 @@ public class BookController extends FileUpload {
 
 		Book book = bookService.findById(dto.getId()).orElseThrow(AppException::new);
 		dto.update(book);
-		book = bookService.save(book, UPDATE, BOOK_UPDATE);
+
+		book = bookService.update(book);
 		return ok(success(BookDto.from(book)).getJson());
 	}
 
@@ -114,7 +111,7 @@ public class BookController extends FileUpload {
 
 		book.setPhoto(fileName);
 
-		book = bookService.save(book, UPDATE, BOOK_UPDATE);
+		book = bookService.save(book);
 
 		return ok(success(BookDto.from(book)).getJson());
 	}
@@ -131,7 +128,7 @@ public class BookController extends FileUpload {
 
 		book.setPhoto(fileName);
 
-		book = bookService.save(book, UPDATE, BOOK_UPDATE);
+		book = bookService.update(book);
 
 		return ok(success(BookDto.from(book)).getJson());
 	}

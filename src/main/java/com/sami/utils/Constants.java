@@ -9,12 +9,6 @@ public class Constants {
 	public static final String MESSAGE_KEY_WARN = "WARNING_MESSAGE";
 
 	public static final String MESSAGE_KEY_ERROR = "ERROR_MESSAGE";
-
-	public static final String BOOK_SAVE = "Book saved successfully !!";
-	
-	public static final String BOOK_UPDATE = "Book saved successfully !!";
-	
-	public static final String SIGNUP = "Signup successfully !!";
 	
 	public static final String REQUIRED = "Required";
 	

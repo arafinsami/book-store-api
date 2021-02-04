@@ -1,10 +1,8 @@
 package com.sami.controller;
 
-import static com.sami.enums.Action.SAVE;
 import static com.sami.utils.ApiError.error;
 import static com.sami.utils.ApiResponseBuilder.errors;
 import static com.sami.utils.ApiResponseBuilder.success;
-import static com.sami.utils.Constants.SIGNUP;
 import static org.springframework.http.ResponseEntity.ok;
 
 import java.util.ArrayList;
@@ -114,7 +112,7 @@ public class MyAccountController {
 
 		AppUser user = dto.to();
 
-		appUserService.signup(user, SAVE, SIGNUP);
+		appUserService.signup(user);
 		return ok(success(SignupDto.from(user)).getJson());
 	}
 	
