@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sami.dto.PaymentDto;
 import com.sami.dto.ProfileDto;
 import com.sami.entity.AppUser;
+import com.sami.entity.Payment;
 import com.sami.exceptions.AppException;
+import com.sami.security.ActiveUserContext;
 import com.sami.service.AppUserService;
 import com.sami.service.ProfileService;
 
@@ -36,6 +39,8 @@ public class MyProfileController {
 	private final ProfileService profileService;
 
 	private final AppUserService appUserService;
+
+	private final ActiveUserContext activeUserContext;
 
 	@PostMapping("/update")
 	@ApiOperation(value = "update profile", response = ProfileDto.class)
@@ -62,5 +67,23 @@ public class MyProfileController {
 		ProfileDto dto = ProfileDto.from(user);
 
 		return ok(success(dto).getJson());
+	}
+
+	@PostMapping("/add/payment")
+	@ApiOperation(value = "add payment", response = PaymentDto.class)
+	public ResponseEntity<JSONObject> addPayment(@Valid @RequestBody PaymentDto dto, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return ok(errors(error(bindingResult)).getJson());
+		}
+
+		AppUser user = appUserService.findByUsername(activeUserContext.getLoggedInUserName());
+
+		Payment payment = dto.to();
+
+		payment.setAppUser(user);
+
+		profileService.save(payment);
+		return ok(success(ProfileDto.from(user)).getJson());
 	}
 }

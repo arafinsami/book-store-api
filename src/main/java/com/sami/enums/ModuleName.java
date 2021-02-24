@@ -4,5 +4,7 @@ public enum ModuleName {
 
 	BOOK,
 	SIGNUP,
-	PROFILE_UPDATE;
+	PROFILE_UPDATE,
+	ADD_PAYMENT,
+	ADD_BILLING;
 }
