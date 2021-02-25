@@ -40,7 +40,7 @@ public class MyProfileController {
 
 	private final AppUserService appUserService;
 
-	private final ActiveUserContext activeUserContext;
+	private final ActiveUserContext context;
 
 	@PostMapping("/update")
 	@ApiOperation(value = "update profile", response = ProfileDto.class)
@@ -55,6 +55,7 @@ public class MyProfileController {
 		dto.update(user);
 
 		profileService.update(user);
+		
 		return ok(success(ProfileDto.from(user)).getJson());
 	}
 
@@ -77,13 +78,14 @@ public class MyProfileController {
 			return ok(errors(error(bindingResult)).getJson());
 		}
 
-		AppUser user = appUserService.findByUsername(activeUserContext.getLoggedInUserName());
+		AppUser appUser = appUserService.findByUsername(context.getLoggedInUserName());
 
 		Payment payment = dto.to();
 
-		payment.setAppUser(user);
+		payment.setAppUser(appUser);
 
 		profileService.save(payment);
-		return ok(success(ProfileDto.from(user)).getJson());
+
+		return ok(success(PaymentDto.from(payment)).getJson());
 	}
 }

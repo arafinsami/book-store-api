@@ -15,7 +15,6 @@ public class SecurityConstant {
 	public static final String[] PUBLIC_MATECHERS = {
     		"/setup",
     		"/my-account/**",
-    		"/my-profile/**",
     		"/link/**",
     		"/v2/api-docs",
     		"/swagger-ui.html",

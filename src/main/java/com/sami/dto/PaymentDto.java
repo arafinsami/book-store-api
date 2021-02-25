@@ -44,4 +44,19 @@ public class PaymentDto {
 		payment.setBilling(billing);
 		return payment;
 	}
+
+	public static PaymentDto from(Payment payment) {
+
+		PaymentDto dto = new PaymentDto();
+		dto.setType(payment.getType());
+		dto.setCardName(payment.getCardName());
+		dto.setCardNumber(payment.getCardNumber());
+		dto.setExpiryMonth(payment.getExpiryMonth());
+		dto.setExpiryYear(payment.getExpiryYear());
+		dto.setCvc(payment.getCvc());
+		dto.setHolderName(payment.getHolderName());
+		dto.setDefaultPayment(payment.isDefaultPayment());
+		dto.setBilling(payment.getBilling());
+		return dto;
+	}
 }

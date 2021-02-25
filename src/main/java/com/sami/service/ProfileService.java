@@ -57,6 +57,7 @@ public class ProfileService {
 		Payment p = paymentRepository.save(payment);
 		
 		Billing billing = p.getBilling();
+		billing.setPayment(p);
 		
 		billingRepository.save(billing);
 
