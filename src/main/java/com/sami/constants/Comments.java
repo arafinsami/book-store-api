@@ -17,4 +17,8 @@ public static final String BOOK_SAVE_COMMENT = "book save successfully !!";
 	public static final String BILLING_SAVE_COMMENTS = "billing saved";
 	
 	public static final String BILLING_UPDATE_COMMENTS = "billing updated";
+	
+	public static final String SHIPPING_SAVE_COMMENTS = "shipping saved";
+	
+	public static final String SHIPPING_UPDATE_COMMENTS = "shipping saved";
 }

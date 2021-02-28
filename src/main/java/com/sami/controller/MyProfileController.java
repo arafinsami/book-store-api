@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sami.dto.PaymentDto;
 import com.sami.dto.ProfileDto;
+import com.sami.dto.ShippingDto;
 import com.sami.entity.AppUser;
 import com.sami.entity.Payment;
+import com.sami.entity.Shipping;
 import com.sami.exceptions.AppException;
 import com.sami.security.ActiveUserContext;
 import com.sami.service.AppUserService;
@@ -74,8 +76,8 @@ public class MyProfileController {
 		return ok(success(dto).getJson());
 	}
 
-	@PostMapping("/add/payment")
-	@ApiOperation(value = "add payment", response = PaymentDto.class)
+	@PostMapping("/save/payment")
+	@ApiOperation(value = "save payment", response = PaymentDto.class)
 	public ResponseEntity<JSONObject> addPayment(@Valid @RequestBody PaymentDto dto, BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
@@ -91,28 +93,6 @@ public class MyProfileController {
 		profileService.savePayment(payment);
 
 		return ok(success(PaymentDto.from(payment)).getJson());
-	}
-
-	@GetMapping("/view/payments/{username}")
-	@ApiOperation(value = "get payment list by username", response = PaymentDto.class)
-	public ResponseEntity<JSONObject> viewPaymentsByAppUser(@PathVariable String username) {
-
-		AppUser appUser = appUserService.findByUsername(username);
-
-		List<Payment> payments = profileService.findByAppUser(appUser);
-
-		List<PaymentDto> dtos = payments.stream().map(PaymentDto::from).collect(Collectors.toList());
-
-		return ok(success(dtos).getJson());
-	}
-
-	@GetMapping("/view/payment/{id}")
-	@ApiOperation(value = "get payment by id", response = PaymentDto.class)
-	public ResponseEntity<JSONObject> findByPaymentId(@PathVariable Long id) {
-
-		Payment payment = profileService.findByPaymentId(id).orElseThrow(AppException::new);
-
-		return ok(success(payment).getJson());
 	}
 
 	@PutMapping("/update/payment")
@@ -131,4 +111,85 @@ public class MyProfileController {
 
 		return ok(success(PaymentDto.from(payment)).getJson());
 	}
+
+	@GetMapping("/view/payment/{id}")
+	@ApiOperation(value = "get payment by id", response = PaymentDto.class)
+	public ResponseEntity<JSONObject> findByPaymentId(@PathVariable Long id) {
+
+		Payment payment = profileService.findByPaymentId(id).orElseThrow(AppException::new);
+
+		return ok(success(payment).getJson());
+	}
+
+	@GetMapping("/view/payments/{username}")
+	@ApiOperation(value = "get payment list by username", response = PaymentDto.class)
+	public ResponseEntity<JSONObject> viewPaymentListByAppUser(@PathVariable String username) {
+
+		AppUser appUser = appUserService.findByUsername(username);
+
+		List<Payment> payments = profileService.findByPaymentAppUser(appUser);
+
+		List<PaymentDto> dtos = payments.stream().map(PaymentDto::from).collect(Collectors.toList());
+
+		return ok(success(dtos).getJson());
+	}
+
+	@PostMapping("/save/shipping")
+	@ApiOperation(value = "save shipping", response = ShippingDto.class)
+	public ResponseEntity<JSONObject> addShipping(@Valid @RequestBody ShippingDto dto, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return ok(errors(error(bindingResult)).getJson());
+		}
+
+		AppUser appUser = appUserService.findByUsername(context.getLoggedInUserName());
+
+		Shipping shipping = dto.to();
+
+		shipping.setAppUser(appUser);
+
+		profileService.saveShipping(shipping);
+
+		return ok(success(ShippingDto.from(shipping)).getJson());
+	}
+
+	@PutMapping("/update/shipping")
+	@ApiOperation(value = "update shipping", response = ShippingDto.class)
+	public ResponseEntity<JSONObject> updateShipping(@Valid @RequestBody ShippingDto dto, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return ok(errors(error(bindingResult)).getJson());
+		}
+
+		Shipping shipping = profileService.findByShippingId(dto.getId()).orElseThrow(AppException::new);
+
+		dto.update(shipping);
+
+		shipping = profileService.updateShipping(shipping);
+
+		return ok(success(ShippingDto.from(shipping)).getJson());
+	}
+
+	@GetMapping("/view/shipping/{id}")
+	@ApiOperation(value = "get shipping by id", response = ShippingDto.class)
+	public ResponseEntity<JSONObject> findByShippingId(@PathVariable Long id) {
+
+		Shipping shipping = profileService.findByShippingId(id).orElseThrow(AppException::new);
+
+		return ok(success(shipping).getJson());
+	}
+
+	@GetMapping("/view/shipping/{username}")
+	@ApiOperation(value = "get shipping list by username", response = ShippingDto.class)
+	public ResponseEntity<JSONObject> viewShippingListByAppUser(@PathVariable String username) {
+
+		AppUser appUser = appUserService.findByUsername(username);
+
+		List<Shipping> shippings = profileService.findByShippingAppUser(appUser);
+
+		List<ShippingDto> dtos = shippings.stream().map(ShippingDto::from).collect(Collectors.toList());
+
+		return ok(success(dtos).getJson());
+	}
+
 }
