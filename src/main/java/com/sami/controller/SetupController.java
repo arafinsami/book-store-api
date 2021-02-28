@@ -50,22 +50,19 @@ public class SetupController {
 		
 		List<Role> roles = new ArrayList<>();
 
-		Role role = new Role();
-		role.setName("ROLE_ADMIN");
-		role.setTitle("Admin");
+		Role role = roleRepository.findByName("ROLE_ADMIN");
 		role.setPermissions(pSets);
 		roleRepository.save(role);
-		
 		roles.add(role);
 		
-		Set<Role> sRoles = roles.stream().collect(Collectors.toSet());
+		Set<Role> roleSet = roles.stream().collect(Collectors.toSet());
 		
 		AppUser user = new AppUser();
 		user.setFirstName("ADMIN");
 		user.setLastName("ADMIN");
 		user.setUsername("admin");
 		user.setPassword(passwordEncoder.encode("admin"));
-		user.setRoles(sRoles);
+		user.setRoles(roleSet);
 		user.setEnabled(true);
 		user.setLastPasswordResetDate(Calendar.getInstance().getTime());
 		userRepository.save(user);

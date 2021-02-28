@@ -44,10 +44,24 @@ public class PaymentDto {
 		payment.setBilling(billing);
 		return payment;
 	}
+	
+	public void update(Payment payment) {
+
+		payment.setType(type);
+		payment.setCardName(cardName);
+		payment.setCardNumber(cardNumber);
+		payment.setExpiryMonth(expiryMonth);
+		payment.setExpiryYear(expiryYear);
+		payment.setCvc(cvc);
+		payment.setHolderName(holderName);
+		payment.setDefaultPayment(defaultPayment);
+		payment.setBilling(billing);
+	}
 
 	public static PaymentDto from(Payment payment) {
 
 		PaymentDto dto = new PaymentDto();
+		dto.setId(payment.getId());
 		dto.setType(payment.getType());
 		dto.setCardName(payment.getCardName());
 		dto.setCardNumber(payment.getCardNumber());

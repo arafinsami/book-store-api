@@ -1,15 +1,20 @@
 package com.sami.service;
 
 import static com.sami.constants.Comments.PAYMENT_SAVE_COMMENTS;
+import static com.sami.constants.Comments.PAYMENT_UPDATE_COMMENTS;
 import static com.sami.constants.Comments.BILLING_SAVE_COMMENTS;
+import static com.sami.constants.Comments.BILLING_UPDATE_COMMENTS;
 import static com.sami.constants.Comments.PROFILE_UPDATE_COMMENTS;
 import static com.sami.enums.Action.SAVE;
 import static com.sami.enums.Action.UPDATE;
 import static com.sami.enums.ModuleName.ADD_PAYMENT;
+import static com.sami.enums.ModuleName.UPDATE_PAYMENT;
 import static com.sami.enums.ModuleName.ADD_BILLING;
+import static com.sami.enums.ModuleName.UPDATE_BILLING;
 import static com.sami.enums.ModuleName.PROFILE_UPDATE;
 import static java.lang.String.valueOf;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,7 +57,7 @@ public class ProfileService {
 		return u;
 	}
 	
-	public Payment save(Payment payment) {
+	public Payment savePayment(Payment payment) {
 		
 		Payment p = paymentRepository.save(payment);
 		
@@ -77,8 +82,43 @@ public class ProfileService {
 		
 		return p;
 	}
+	
+    public Payment updatePayment(Payment payment) {
+		
+		Payment p = paymentRepository.save(payment);
+		
+		Billing billing = billingRepository.getOne(p.getBilling().getId());
+		
+		billing.setPayment(p);
+		
+		billingRepository.save(billing);
+
+		actionLogService.publishActivity(
+				UPDATE_PAYMENT,
+				UPDATE,
+				valueOf(p.getId()),
+				PAYMENT_UPDATE_COMMENTS
+		);
+		
+		actionLogService.publishActivity(
+				UPDATE_BILLING,
+				UPDATE,
+				valueOf(billing.getId()),
+				BILLING_UPDATE_COMMENTS
+		);
+		
+		return p;
+	}
 
 	public Optional<AppUser> get(Long id) {
 		return repository.findById(id);
+	}
+	
+	public List<Payment> findByAppUser(AppUser appUser){
+		return paymentRepository.findByAppUser(appUser);
+	}
+	
+	public Optional<Payment> findByPaymentId(Long id) {
+		return paymentRepository.findById(id);
 	}
 }

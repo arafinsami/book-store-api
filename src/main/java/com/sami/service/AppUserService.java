@@ -6,6 +6,7 @@ import static com.sami.enums.ModuleName.SIGNUP;
 import static java.lang.String.valueOf;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -39,9 +40,11 @@ public class AppUserService {
 
 	public AppUser signup(AppUser appUser) {
 
-		Set<Role> roles = roleRepository.findByName("ROLE_USER");
+		Set<Role> roleSet = new HashSet<Role>();
+		Role role = roleRepository.findByName("ROLE_USER");
+		roleSet.add(role);
 		appUser.setPassword(encoder.encode(appUser.getPassword()));
-		appUser.setRoles(roles);
+		appUser.setRoles(roleSet);
 		appUser.setEnabled(true);
 		appUser.setLastPasswordResetDate(Calendar.getInstance().getTime());
 		AppUser user = repository.save(appUser);

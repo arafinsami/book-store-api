@@ -5,6 +5,9 @@ import static com.sami.utils.ApiResponseBuilder.errors;
 import static com.sami.utils.ApiResponseBuilder.success;
 import static org.springframework.http.ResponseEntity.ok;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.json.simple.JSONObject;
@@ -13,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +59,7 @@ public class MyProfileController {
 		dto.update(user);
 
 		profileService.update(user);
-		
+
 		return ok(success(ProfileDto.from(user)).getJson());
 	}
 
@@ -84,7 +88,46 @@ public class MyProfileController {
 
 		payment.setAppUser(appUser);
 
-		profileService.save(payment);
+		profileService.savePayment(payment);
+
+		return ok(success(PaymentDto.from(payment)).getJson());
+	}
+
+	@GetMapping("/view/payments/{username}")
+	@ApiOperation(value = "get payment list by username", response = PaymentDto.class)
+	public ResponseEntity<JSONObject> viewPaymentsByAppUser(@PathVariable String username) {
+
+		AppUser appUser = appUserService.findByUsername(username);
+
+		List<Payment> payments = profileService.findByAppUser(appUser);
+
+		List<PaymentDto> dtos = payments.stream().map(PaymentDto::from).collect(Collectors.toList());
+
+		return ok(success(dtos).getJson());
+	}
+
+	@GetMapping("/view/payment/{id}")
+	@ApiOperation(value = "get payment by id", response = PaymentDto.class)
+	public ResponseEntity<JSONObject> findByPaymentId(@PathVariable Long id) {
+
+		Payment payment = profileService.findByPaymentId(id).orElseThrow(AppException::new);
+
+		return ok(success(payment).getJson());
+	}
+
+	@PutMapping("/update/payment")
+	@ApiOperation(value = "update payment", response = PaymentDto.class)
+	public ResponseEntity<JSONObject> updatePayment(@Valid @RequestBody PaymentDto dto, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			return ok(errors(error(bindingResult)).getJson());
+		}
+
+		Payment payment = profileService.findByPaymentId(dto.getId()).orElseThrow(AppException::new);
+
+		dto.update(payment);
+
+		payment = profileService.updatePayment(payment);
 
 		return ok(success(PaymentDto.from(payment)).getJson());
 	}
