@@ -179,7 +179,7 @@ public class MyProfileController {
 		return ok(success(shipping).getJson());
 	}
 
-	@GetMapping("/view/shipping/{username}")
+	@GetMapping("/view/shippings/{username}")
 	@ApiOperation(value = "get shipping list by username", response = ShippingDto.class)
 	public ResponseEntity<JSONObject> viewShippingListByAppUser(@PathVariable String username) {
 

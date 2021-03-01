@@ -10,6 +10,8 @@ public class ShippingDto {
 	private Long id;
 
 	private String shippingName;
+	
+	private boolean defaultshipping;
 
 	private String shippingStreet1;
 
@@ -27,6 +29,7 @@ public class ShippingDto {
 
 		Shipping shipping = new Shipping();
 		shipping.setShippingName(shippingName);
+		shipping.setDefaultshipping(defaultshipping);
 		shipping.setShippingStreet1(shippingStreet1);
 		shipping.setShippingStreet2(shippingStreet2);
 		shipping.setShippingCity(shippingCity);
@@ -39,6 +42,7 @@ public class ShippingDto {
 	public void update(Shipping shipping) {
 
 		shipping.setShippingName(shippingName);
+		shipping.setDefaultshipping(defaultshipping);
 		shipping.setShippingStreet1(shippingStreet1);
 		shipping.setShippingStreet2(shippingStreet2);
 		shipping.setShippingCity(shippingCity);
@@ -52,6 +56,7 @@ public class ShippingDto {
 		ShippingDto dto = new ShippingDto();
 		dto.setId(shipping.getId());
 		dto.setShippingName(shipping.getShippingName());
+		dto.setDefaultshipping(shipping.isDefaultshipping());
 		dto.setShippingStreet1(shipping.getShippingStreet1());
 		dto.setShippingStreet2(shipping.getShippingStreet2());
 		dto.setShippingCity(shipping.getShippingCity());

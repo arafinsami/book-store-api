@@ -29,6 +29,8 @@ public class Shipping implements Serializable {
 	private Long id;
 
 	private String shippingName;
+	
+	private boolean defaultshipping;
 
 	private String shippingStreet1;
 
