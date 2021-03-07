@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.sami'
 version = 'V1'
-sourceCompatibility = '8'
+sourceCompatibility = '15'
 
 configurations {
 	compileOnly {

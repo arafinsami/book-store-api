@@ -114,4 +114,8 @@ public class StringUtils {
                 ? result.reverse().toString()
                 : String.format("%" + width + "s", result.reverse().toString()).replace(" ", BASE32_SYMBOLS[0]);
     }
+    
+    public static String trim(String str) {
+		return str.trim();
+	}
 }
